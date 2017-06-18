@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -e
+
 ### begin login
 loginCmd='az login -u "$loginId" -p "$loginSecret"'
 
