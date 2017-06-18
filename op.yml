@@ -1,0 +1,57 @@
+name: github.com/opspec-pkgs/azure.keyvault.secret-file.get
+description: gets a secret file from azure keyvault
+inputs:
+  subscriptionId:
+    string:
+      constraints: { minLength: 1 }
+      description: id of azure subscription
+  loginId:
+    string:
+      constraints: { minLength: 1 }
+      description: id of user, service principal, or app to login with
+  loginSecret:
+    string:
+      constraints: { minLength: 1 }
+      description: secret of user, service principal, or app to login with
+      isSecret: true
+  name:
+    string:
+      constraints: { minLength: 1 }
+      description: name of the secret
+  vault:
+    string:
+      constraints: { minLength: 1 }
+      description: name of the key vault
+  encoding:
+    string:
+      constraints: { enum: [ascii, base64, hex, utf-16be, utf-16le, utf-8] }
+      description: encoding of the secret file
+      default: utf-8
+  loginTenantId:
+    string:
+      constraints: { minLength: 1 }
+      description: tenant id of user, service principal, or app to login with
+      default: ' '
+  loginType:
+    string:
+      constraints: { enum: [user, sp]}
+      description: type of login; 'user' (default) or 'sp' for service principal
+      default: user
+outputs:
+  value:
+    file:
+      description: the secret file
+run:
+  container:
+    image: { ref: 'azuresdk/azure-cli-python:0.2.10' }
+    cmd: [ /cmd.sh ]
+    files: { /cmd.sh, /value: value }
+    envVars:
+      subscriptionId:
+      loginId:
+      loginSecret:
+      name:
+      vault:
+      encoding:
+      loginTenantId:
+      loginType:
